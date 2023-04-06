@@ -1,6 +1,9 @@
 import Link from 'next/link';
+import  useAuth from '../hooks/useAuth';
 
 export default function Navbar() {
+    const { user, logout } = useAuth();
+
     return (
         <>
             <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -9,11 +12,23 @@ export default function Navbar() {
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">BLOGGER</span>
                     </Link>
                     <div className="flex items-center">
-                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Link href="/login" >LogIn</Link></button>
-                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Link href="/signup" >SignUp</Link></button>
+                        {user ? (
+                            <>
+                                {user.role !== 'reader' && (
+                                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Link href="/createpost" >Create Post</Link></button>
+                                )}
+                                <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => logout()}>Logout</button>
+                            </>
+                        ) : (
+                            <>
+                                <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Link href="/login" >LogIn</Link></button>
+                                <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Link href="/signup" >SignUp</Link></button>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>
+            { user &&
             <nav className="bg-gray-50 dark:bg-gray-700">
                 <div className="max-w-screen-xl px-4 py-3 mx-auto">
                     <div className="flex items-center">
@@ -21,13 +36,11 @@ export default function Navbar() {
                             <li>
                                 <Link href="/" className="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</Link>
                             </li>
-                            <li>
-                                <Link href="/createpost" className="text-gray-900 dark:text-white hover:underline">Create Post</Link>
-                            </li>
                         </ul>
                     </div>
                 </div>
             </nav>
+            }
         </>
-    )
+    );
 }

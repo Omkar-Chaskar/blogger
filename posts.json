@@ -1,0 +1,21 @@
+{
+    "posts": [
+      {
+        "id": "1",
+        "title": "First post",
+        "content": "This is my first blog post.",
+        "image": "https://example.com/image1.jpg",
+        "author": "Alice",
+        "date": "2022-05-01"
+      },
+      {
+        "id": "2",
+        "title": "Second post",
+        "content": "This is my second blog post.",
+        "image": null,
+        "author": "Bob",
+        "date": "2022-05-02"
+      }
+    ]
+  }
+  

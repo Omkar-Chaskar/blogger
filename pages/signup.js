@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const roles = ["Reader", "Author", "Admin"];
 
@@ -11,6 +12,8 @@ function Signup() {
   const [role, setRole] = useState("Reader");
   const [disableSubmit, setDisableSubmit] = useState(true);
 
+  const router = useRouter();
+
   useEffect(() => {
     if (password !== confirmPassword) {
       setDisableSubmit(true);
@@ -19,18 +22,34 @@ function Signup() {
     }
   }, [password, confirmPassword]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(
-        {
-            firstName : firstName,
-            lastName : lastName,
-            userName : username,
-            password : password,
-            role : role
-        }
-    )
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        username,
+        password,
+        role
+      })
+    })
+
+    if (response.ok) {
+      // Handle successful registration
+      console.log(response);
+
+      // Redirect to the login page
+      router.push('/login');
+    } else {
+      // Handle error
+    }
+  }
+
 
   return (
     <div className="max-w-md mx-auto">
